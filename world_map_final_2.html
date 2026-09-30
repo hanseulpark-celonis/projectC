@@ -143,7 +143,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
         }
 
         .status-dot {
@@ -171,15 +171,15 @@
         .plant-description {
             font-size: 16px;
             color: #777e8d;
-            line-height: 1.45;
-            margin: 0 0 16px;
+            line-height: 1.6;
+            margin: 0 0 22px;
         }
 
         .cotd-section {
             display: flex;
             align-items: baseline;
             gap: 14px;
-            margin: 0 0 14px;
+            margin: 0 0 18px;
         }
 
         .cotd-value {
@@ -196,8 +196,8 @@
         .issue-description {
             font-size: 16px;
             color: #747b89;
-            line-height: 1.65;
-            margin: 0 0 16px;
+            line-height: 1.7;
+            margin: 0 0 24px;
         }
 
         .metrics {
@@ -211,7 +211,8 @@
             justify-content: space-between;
             gap: 16px;
             font-size: 15px;
-            padding: 10px 0;
+            line-height: 1.5;
+            padding: 13px 0;
             border-bottom: 1px solid #e5e7eb;
         }
 
@@ -250,115 +251,19 @@
 
         @media (max-width: 1024px), (max-height: 600px) {
             .detail-panel {
-                width: clamp(200px, 52vw, 440px);
+                width: clamp(260px, 60vw, 440px);
                 aspect-ratio: auto;
-                padding: 10px;
+                max-height: calc(100vh - 40px);
+                padding: 20px;
                 overflow-y: auto;
-                border-radius: 14px;
-            }
-
-            .panel-header {
-                gap: 8px;
-                margin-bottom: 6px;
-            }
-
-            .status-dot {
-                width: 12px;
-                height: 12px;
-            }
-
-            .plant-name {
-                font-size: 18px;
-            }
-
-            .status-badge {
-                font-size: 12px;
-            }
-
-            .plant-description {
-                font-size: 13px;
-                line-height: 1.15;
-                margin-bottom: 4px;
-            }
-
-            .cotd-section {
-                gap: 6px;
-                margin-bottom: 4px;
-            }
-
-            .cotd-value {
-                font-size: 24px;
-            }
-
-            .cotd-target {
-                font-size: 13px;
-            }
-
-            .issue-description {
-                font-size: 15px;
-                line-height: 1.15;
-                margin-bottom: 4px;
-            }
-
-            .metric {
-                gap: 4px;
-                font-size: 12px;
-                padding: 2px 0;
+                border-radius: 16px;
             }
         }
 
         @media (max-width: 380px) {
             .detail-panel {
-                padding: 8px;
-            }
-
-            .panel-header {
-                gap: 6px;
-                margin-bottom: 4px;
-            }
-
-            .status-dot {
-                width: 10px;
-                height: 10px;
-            }
-
-            .plant-name {
-                font-size: 18px;
-            }
-
-            .status-badge {
-                font-size: 12px;
-            }
-
-            .plant-description {
-                font-size: 13px;
-                line-height: 1.15;
-                margin-bottom: 4px;
-            }
-
-            .cotd-section {
-                gap: 6px;
-                margin-bottom: 4px;
-            }
-
-            .cotd-value {
-                font-size: 24px;
-            }
-
-            .cotd-target {
-                font-size: 13px;
-            }
-
-            .issue-description {
-                font-size: 15px;
-                line-height: 1.15;
-                margin-bottom: 4px;
-            }
-
-            .metric {
-                gap: 4px;
-                font-size: 12px;
-                padding: 2px 0;
+                width: calc(100vw - 40px);
+                padding: 16px;
             }
         }
     </style>
