@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Network Control Tower - World Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 40px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .map-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .map-wrapper {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .legend {
+            background: white;
+            border: 1px solid #d4dce6;
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.transformer {
+            background: #5b7c99;
+        }
+
+        .legend-dot.switchgear {
+            background: #5b7c99;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 12px;
+            height: 12px;
+        }
+
+        .legend-dot.on-track {
+            background: #4caf50;
+        }
+
+        .legend-dot.at-risk {
+            background: #ffa500;
+        }
+
+        .legend-dot.behind {
+            background: #ef5350;
+        }
+
+        .legend-dot.ramping {
+            background: #1e88e5;
+        }
+
+        .detail-panel {
+            width: min(400px, 66.667vw, calc((100vh - 40px) * 0.82));
+            aspect-ratio: 0.82 / 1;
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(20, 30, 50, 0.14);
+            padding: 24px;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        .detail-panel.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .status-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .plant-name {
+            font-size: 25px;
+            font-weight: 700;
+            color: #1b2a48;
+        }
+
+        .status-badge {
+            margin-left: auto;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ef5350;
+            white-space: nowrap;
+        }
+
+        .plant-description {
+            font-size: 16px;
+            color: #777e8d;
+            line-height: 1.45;
+            margin: 0 0 16px;
+        }
+
+        .cotd-section {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin: 0 0 14px;
+        }
+
+        .cotd-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ef5350;
+        }
+
+        .cotd-target {
+            font-size: 16px;
+            color: #777e8d;
+        }
+
+        .issue-description {
+            font-size: 16px;
+            color: #747b89;
+            line-height: 1.65;
+            margin: 0 0 16px;
+        }
+
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            font-size: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .metric-label {
+            color: #777e8d;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #000;
+            text-align: right;
+        }
+
+        /* Custom marker styles */
+        .marker-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .marker-diamond {
+            width: 20px;
+            height: 20px;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .marker-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: center;
+            margin-top: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 1024px), (max-height: 600px) {
+            .detail-panel {
+                width: clamp(200px, 48vw, 400px);
+                aspect-ratio: auto;
+                padding: 10px;
+                overflow-y: auto;
+                border-radius: 14px;
+            }
+
+            .panel-header {
+                gap: 8px;
+                margin-bottom: 6px;
+            }
+
+            .status-dot {
+                width: 12px;
+                height: 12px;
+            }
+
+            .plant-name {
+                font-size: 18px;
+            }
+
+            .status-badge {
+                font-size: 10px;
+            }
+
+            .plant-description {
+                font-size: 11px;
+                line-height: 1.25;
+                margin-bottom: 6px;
+            }
+
+            .cotd-section {
+                gap: 8px;
+                margin-bottom: 6px;
+            }
+
+            .cotd-value {
+                font-size: 28px;
+            }
+
+            .cotd-target {
+                font-size: 11px;
+            }
+
+            .issue-description {
+                font-size: 10px;
+                line-height: 1.25;
+                margin-bottom: 6px;
+            }
+
+            .metric {
+                gap: 6px;
+                font-size: 10px;
+                padding: 4px 0;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .detail-panel {
+                padding: 8px;
+            }
+
+            .panel-header {
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .status-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .plant-name {
+                font-size: 16px;
+            }
+
+            .status-badge {
+                font-size: 8px;
+            }
+
+            .plant-description {
+                font-size: 9px;
+                line-height: 1.15;
+                margin-bottom: 4px;
+            }
+
+            .cotd-section {
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .cotd-value {
+                font-size: 24px;
+            }
+
+            .cotd-target {
+                font-size: 9px;
+            }
+
+            .issue-description {
+                font-size: 8px;
+                line-height: 1.15;
+                margin-bottom: 4px;
+            }
+
+            .metric {
+                gap: 4px;
+                font-size: 8px;
+                padding: 2px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="map-section">
+            <div class="map-wrapper">
+                <div id="map"></div>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot transformer"></div>
+                    <span>Transformer plant</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot switchgear"></div>
+                    <span>Switchgear plant</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot on-track"></div>
+                    <span>On track</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot at-risk"></div>
+                    <span>At risk</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot behind"></div>
+                    <span>Behind target</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot ramping"></div>
+                    <span>Ramping up</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-header">
+                <div class="status-dot" id="panelStatusDot"></div>
+                <div class="plant-name" id="panelPlantName">Plant Name</div>
+                <div class="status-badge" id="panelStatus">Status</div>
+            </div>
+
+            <div class="plant-description" id="panelProductType">Product Type</div>
+
+            <div class="cotd-section">
+                <div class="cotd-value" id="panelCOTD">--</div>
+                <div class="cotd-target" id="panelTarget">COTD metric</div>
+            </div>
+
+            <div class="issue-description" id="panelIssue">
+                Plant details will appear here.
+            </div>
+
+            <div class="metrics" id="metricsContainer">
+                <!-- Metrics will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Berlin plant data
+        const berlinPlant = {
+            id: 'BER_DE_001',
+            name: 'Berlin',
+            city: 'Berlin',
+            country: 'Germany',
+            latitude: 52.52,
+            longitude: 13.405,
+            type: 'switchgear',
+            status: 'behind',
+            statusLabel: 'Behind Target',
+            productType: 'SF6-free HV Switchgear · Vacuum Interrupters (Blue Portfolio)',
+            cotd: '74%',
+            target: 'COTD vs 92% target',
+            issue: 'Berlin is an assembly plant — it builds SF6-free switchgears from pre-products it manufactures in-house (vacuum interrupters, a process-industry step) plus parts it buys from suppliers. COTD has fallen to 74% against the 92% commitment: the delay sits in the in-house pre-products, in supplied parts, and in factory-test rework.',
+            metrics: { 'COTD': '74%', 'Orders at risk': '38 switchgears', 'Backlog exposure': '€52M', 'In-house VI on-time': '71%', 'First-pass test yield': '83%' }
+        };
+
+        const allPlants = [
+            berlinPlant,
+            { name: 'Nürnberg', latitude: 49.45, longitude: 11.080, type: 'transformer', status: 'on-track' },
+            { name: 'Jackson', latitude: 32.30, longitude: -90.180, type: 'switchgear', status: 'ramping' },
+            { name: 'Mexico', latitude: 19.43, longitude: -99.130, type: 'transformer', status: 'on-track' },
+            { name: 'Toronto', latitude: 43.65, longitude: -79.380, type: 'transformer', status: 'on-track' },
+            { name: 'Jundiai', latitude: -23.18, longitude: -46.870, type: 'transformer', status: 'at-risk' },
+            { name: 'Middle East', latitude: 25.20, longitude: 55.270, type: 'switchgear', status: 'ramping' },
+            { name: 'Dresden', latitude: 51.05, longitude: 13.740, type: 'transformer', status: 'on-track' },
+            { name: 'Shanghai', latitude: 31.23, longitude: 121.470, type: 'transformer', status: 'on-track' },
+            { name: 'Beijing', latitude: 39.90, longitude: 116.410, type: 'switchgear', status: 'on-track' },
+            { name: 'Shenzhen', latitude: 22.54, longitude: 114.060, type: 'transformer', status: 'on-track' },
+            { name: 'Chongqing', latitude: 29.56, longitude: 106.550, type: 'switchgear', status: 'on-track' }
+        ];
+
+        // Status colors
+        const statusColors = {
+            'behind': '#ef5350',
+            'on-track': '#4caf50',
+            'at-risk': '#ffa500',
+            'ramping': '#1e88e5'
+        };
+
+        // Initialize map centered on Europe
+        const map = L.map('map').setView([20, 20], 2);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add markers for all plants
+        allPlants.forEach(plant => {
+            let markerHTML = '';
+            const color = statusColors[plant.status];
+
+            if (plant.type === 'transformer') {
+                markerHTML = `<div style="background-color: ${color};" class="marker-circle"></div><div class="marker-label">${plant.name}</div>`;
+            } else {
+                markerHTML = `<div style="background-color: ${color};" class="marker-diamond"></div><div class="marker-label">${plant.name}</div>`;
+            }
+
+            const customIcon = L.divIcon({
+                html: markerHTML,
+                className: 'custom-marker',
+                iconSize: [50, 45],
+                iconAnchor: [25, 40],
+                popupAnchor: [0, -45],
+                interactive: true
+            });
+
+            const marker = L.marker([plant.latitude, plant.longitude], {
+                icon: customIcon,
+                zIndexOffset: plant.name === 'Berlin' ? 1000 : 0
+            }).addTo(map);
+
+            // Only Berlin is interactive
+            if (plant.name === 'Berlin') {
+                marker.on('mouseover', function() {
+                    showDetailPanel(berlinPlant);
+                });
+                marker.on('mouseout', function() {
+                    closePanel();
+                });
+                marker.on('click', function() {
+                    showDetailPanel(berlinPlant);
+                });
+            }
+        });
+
+        // Show detail panel
+        function showDetailPanel(plant) {
+            const panel = document.getElementById('detailPanel');
+            document.getElementById('panelPlantName').textContent = plant.name;
+            document.getElementById('panelProductType').textContent = `${plant.productType} · ${plant.country}`;
+            document.getElementById('panelCOTD').textContent = plant.cotd;
+            document.getElementById('panelTarget').textContent = plant.target;
+            document.getElementById('panelIssue').textContent = plant.issue;
+            document.getElementById('panelStatus').textContent = (plant.statusLabel || plant.status.replace('-', ' ')).toUpperCase();
+
+            document.getElementById('panelStatusDot').style.background = statusColors[plant.status];
+            document.getElementById('panelStatus').style.color = statusColors[plant.status];
+
+            // Build metrics
+            const metricsContainer = document.getElementById('metricsContainer');
+            metricsContainer.innerHTML = '';
+            Object.entries(plant.metrics).forEach(([label, value]) => {
+                const metric = document.createElement('div');
+                metric.className = 'metric';
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'metric-value';
+                valueSpan.textContent = value;
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'metric-label';
+                labelSpan.textContent = label;
+
+                metric.appendChild(labelSpan);
+                metric.appendChild(valueSpan);
+                metricsContainer.appendChild(metric);
+            });
+
+            panel.classList.add('active');
+        }
+
+        // Close panel
+        function closePanel() {
+            document.getElementById('detailPanel').classList.remove('active');
+        }
+
+        // Close panel on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePanel();
+        });
+    </script>
+</body>
+</html>
