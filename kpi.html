@@ -10,9 +10,9 @@
 		}
 
 		:root {
-			--label-font: clamp(11px, 0.86vw, 18px);
-			--value-font: clamp(16px, 2.1vw, 44px);
-			--note-font: clamp(9px, 0.72vw, 15px);
+			--label-font: clamp(13px, 0.98vw, 21px);
+			--value-font: clamp(19px, 2.5vw, 50px);
+			--note-font: clamp(11px, 0.84vw, 18px);
 			--ink: #12224A;
 			--ink-strong: #1E2536;
 			--ink-muted: #4B5468;
@@ -32,7 +32,7 @@
 
 		.kpi-panel {
 			container-type: inline-size;
-			padding: 12px 14px 14px;
+			padding: 16px 18px 20px;
 			background: #fff;
 			border: 1px solid var(--hairline);
 		}
@@ -40,19 +40,19 @@
 		.kpi-list {
 			display: grid;
 			grid-template-columns: repeat(4, minmax(0, 1fr));
-			gap: 10px;
+			gap: 12px;
 			width: 100%;
 			min-width: 0;
 		}
 
 		.kpi {
 			min-width: 0;
-			min-height: 76px;
+			min-height: 96px;
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
-			gap: 8px;
-			padding: 9px 12px 10px;
+			gap: 10px;
+			padding: 14px 16px 15px;
 			background: #fff;
 			border: 1px solid var(--hairline);
 			border-radius: 4px;
@@ -94,17 +94,22 @@
 		}
 
 		@container (max-width: 620px) {
+			.kpi-panel {
+				padding: 12px 12px 14px;
+			}
+
 			.kpi {
-				gap: 5px;
-				padding: 9px 5px 10px;
+				min-height: 88px;
+				gap: 7px;
+				padding: 12px 7px 13px;
 			}
 
 			.kpi-label {
-				font-size: clamp(9px, 2cqw, 12px);
+				font-size: clamp(11px, 2.4cqw, 15px);
 			}
 
 			.kpi-value {
-				font-size: clamp(11px, 3cqw, 18px);
+				font-size: clamp(13px, 3.6cqw, 22px);
 			}
 		}
 	</style>
