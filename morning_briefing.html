@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Technologies IQ Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            margin-top: 40px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            color: #999;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .section-header .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #f1f3f5;
+            color: #858d9b;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            min-width: 12px;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid #d9dde3;
+            border-left: 4px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card.green {
+            border-left-color: #4caf50;
+        }
+
+        .card.red {
+            border-left-color: #ef5350;
+        }
+
+        .card.orange {
+            border-left-color: #ff9800;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-category {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #4caf50;
+            margin-bottom: 4px;
+        }
+
+        .card.red .card-category {
+            color: #ef5350;
+        }
+
+        .card.orange .card-category {
+            color: #ff9800;
+        }
+
+        .card-number {
+            font-size: 24px;
+            font-weight: 300;
+            color: #ccc;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-bullets {
+            margin: 10px 0;
+        }
+
+        .card-bullet {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .card-bullet::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 8px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #4caf50;
+        }
+
+        .card-bullet strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .card-bullet em {
+            color: #999;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .card-highlight {
+            display: inline-block;
+            max-width: 100%;
+            background-color: #faf3e0;
+            border-left: 3px solid #ff9800;
+            padding: 12px 16px;
+            margin-top: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .card-highlight.green {
+            background-color: #e8f5e9;
+            border-left-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .card-highlight.red {
+            background-color: #ffebee;
+            border-left-color: #ef5350;
+            color: #ef5350;
+        }
+
+        .card-highlight.warning {
+            max-width: none;
+        }
+
+        .card-highlight.warning::before {
+            content: '\26a0';
+            margin-right: 8px;
+        }
+
+        .action-badge {
+            display: inline-block;
+            background: transparent;
+            color: #888;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .action-badge img {
+            display: inline;
+            margin-right: 4px;
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+        }
+
+        .button {
+            display: inline-block;
+            background: #1a2940;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 14px;
+            transition: background 0.2s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #0d1621;
+        }
+
+        .button img {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ef5350;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .priority-badge.secondary {
+            background: #ff9800;
+        }
+
+        .priority-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #ef5350;
+            margin-bottom: 8px;
+        }
+
+        .priority-label.secondary {
+            color: #ff9800;
+        }
+
+        .footer-note {
+            font-size: 15px;
+            color: #5c5c5c;
+            margin-top: 32px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #bbb;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .footer-logos img {
+            display: block;
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .recommended-section {
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 12px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 12px;
+            border: 1px solid #d9dde3;
+            border-left: 4px solid #ef5350;
+        }
+
+        .action-card.secondary {
+            border-left-color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- TODAY'S NOTIFICATIONS -->
+        <div class="section-header">
+            <h2>Today's Notifications</h2>
+            <span class="count">4</span>
+        </div>
+
+        <!-- Card 1: Production Ramp-Up -->
+        <div class="card green">
+            <div class="card-header">
+                <div>
+                    <div class="card-category">Production Ramp-Up</div>
+                    <h3 class="card-title">New-factory ramp-up on track</h3>
+                </div>
+                <div class="card-number">01</div>
+            </div>
+            <p class="card-description">The three new sites adding the capacity the backlog is counting on are all tracking to their ramp curves:</p>
+            <div class="card-bullets">
+                <div class="card-bullet"><strong>Charlotte (US)</strong> <em>— new Large-Power-Transformer plant · SOP 2027</em></div>
+                <div class="card-bullet"><strong>Weiz (AT)</strong> <em>— transformer capacity expansion · new winding lines</em></div>
+                <div class="card-bullet"><strong>Dammam (SA)</strong> <em>— Gas-Insulated Switchgear factory (JV) ramping to full output</em></div>
+            </div>
+            <div class="card-highlight green">3 new factories · on ramp plan</div>
+        </div>
+
+        <!-- Card 2: Switchgears -->
+        <div class="card red">
+            <div class="card-header">
+                <div>
+                    <div class="card-category">Switchgears</div>
+                    <h3 class="card-title">Berlin switchgear is behind on committed delivery</h3>
+                </div>
+                <div class="card-number">02</div>
+            </div>
+            <p class="card-description">SF6-free HV switchgear COTD has fallen to 74% against the 92% commitment — the largest single drag on network delivery. €52M of Berlin backlog is at risk across 38 orders.</p>
+            <div class="card-highlight red">Berlin COTD 74% · €52M at risk</div>
+        </div>
+
+        <!-- Card 3: Transformers -->
+        <div class="card orange">
+            <div class="card-header">
+                <div>
+                    <div class="card-category">Transformers</div>
+                    <h3 class="card-title">Nürnberg core & coil capacity is tight</h3>
+                </div>
+                <div class="card-number">03</div>
+            </div>
+            <p class="card-description">Winding station W3 cycle time has drifted +18% vs plan, putting a batch of Large-Power-Transformer orders under COTD pressure.</p>
+            <div class="card-highlight">34 orders at risk · €61M exposure</div>
+        </div>
+
+        <!-- Card 4: Supply Chain -->
+        <div class="card orange">
+            <div class="card-header">
+                <div>
+                    <div class="card-category">Supply Chain</div>
+                    <h3 class="card-title">Supplier delays are the top external risk to the backlog</h3>
+                </div>
+                <div class="card-number">04</div>
+            </div>
+            <p class="card-description">Inbound supplier delays are the single largest external driver of at-risk backlog. Sharpest exposure is Jundiaí (Americas): the critical steel & bushing supplier is ~23 days late, with cover down to 6 days across 14 open purchase orders.</p>
+            <div class="card-highlight">Jundiaí · 14 late POs · 6 days cover</div>
+        </div>
+
+        <!-- RECOMMENDED FOCUS TODAY -->
+        <div class="section-header" style="margin-top: 48px;">
+            <h2>Recommended Focus Today</h2>
+            <span class="count">3</span>
+        </div>
+
+        <!-- Action Card 1 -->
+        <div class="action-card">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div class="priority-badge">1</div>
+                <div style="flex: 1;">
+                    <div class="priority-label">Act Now</div>
+                    <h3 class="card-title">Resolve Berlin's COTD shortfall</h3>
+                    <p class="card-description">Berlin is the single biggest drag on network delivery — COTD has fallen to 74%. I've traced the root cause across buy, make, quality and test. Run the agent to see the four drivers and place the mitigating action.</p>
+                    <div class="card-highlight red warning">Berlin COTD 74% · €52M at risk — root cause traced</div>
+                    <br>
+                    <div class="action-badge">
+                        <img src="Copilot%20icon.png" alt="">
+                        Microsoft Copilot Studio agent
+                    </div>
+                    <button class="button">
+                        <img src="Copilot%20icon.png" alt="">
+                        Run COTD Risk Agent
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Card 2 -->
+        <div class="action-card secondary">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div class="priority-badge secondary">2</div>
+                <div style="flex: 1;">
+                    <div class="priority-label secondary">Supply</div>
+                    <h3 class="card-title">Secure the Americas supply exposure at Jundiaí</h3>
+                    <p class="card-description">Cover is down to 6 days on imported grain-oriented steel and HV bushings. Expedite or dual-source the 14 late purchase orders before the buffer runs out — €78M of committed backlog sits behind them.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Card 3 -->
+        <div class="action-card secondary">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div class="priority-badge secondary">3</div>
+                <div style="flex: 1;">
+                    <div class="priority-label secondary">Capacity</div>
+                    <h3 class="card-title">Relieve the Nürnberg core & coil bottleneck</h3>
+                    <p class="card-description">Winding station W3 is +18% over plan cycle time. Re-sequence the at-risk Large-Power-Transformer batch and confirm the capacity recovery plan with the plant team this week.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <p class="footer-note">Everything else is holding. If you only make one call today, make it Berlin — it's the highest-value, most-actionable move and I can execute it the moment you approve.</p>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-logos">
+                <img src="Copilot%20icon.png" alt="Copilot">
+                <img src="Microsoft_icon.svg.png" alt="Microsoft">
+            </div>
+            <p>Grid Technologies IQ — a joint Celonis and Microsoft initiative. Insights run on Celonis process intelligence; agents run on Microsoft Copilot Studio.</p>
+        </div>
+    </div>
+</body>
+</html>
