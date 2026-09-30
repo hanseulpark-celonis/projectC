@@ -256,12 +256,6 @@
             .container {
                 flex-direction: column;
             }
-
-            .detail-panel {
-                position: static;
-                width: 100%;
-                max-height: 400px;
-            }
         }
     </style>
 </head>
@@ -403,6 +397,9 @@
             if (plant.name === 'Berlin') {
                 marker.on('mouseover', function() {
                     showDetailPanel(berlinPlant);
+                });
+                marker.on('mouseout', function() {
+                    closePanel();
                 });
                 marker.on('click', function() {
                     showDetailPanel(berlinPlant);
