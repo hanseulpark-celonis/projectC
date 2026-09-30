@@ -106,8 +106,10 @@
         }
 
         .detail-panel {
-            width: min(440px, 66.667vw, calc((100vh - 40px) * 0.82));
+            /* Fixed design size; scaled down as a whole on small screens (see fitDetailPanel) */
+            width: 560px;
             aspect-ratio: 0.82 / 1;
+            transform-origin: top right;
             background: white;
             border: 1px solid #e1e4e8;
             border-radius: 20px;
@@ -246,24 +248,6 @@
         @media (max-width: 1024px) {
             .container {
                 flex-direction: column;
-            }
-        }
-
-        @media (max-width: 1024px), (max-height: 600px) {
-            .detail-panel {
-                width: clamp(260px, 60vw, 440px);
-                aspect-ratio: auto;
-                max-height: calc(100vh - 40px);
-                padding: 20px;
-                overflow-y: auto;
-                border-radius: 16px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .detail-panel {
-                width: calc(100vw - 40px);
-                padding: 16px;
             }
         }
     </style>
@@ -451,7 +435,18 @@
             });
 
             panel.classList.add('active');
+            fitDetailPanel();
         }
+
+        // Scale the card uniformly so it always fits the window while keeping its proportions
+        function fitDetailPanel() {
+            const panel = document.getElementById('detailPanel');
+            if (!panel.classList.contains('active')) return;
+            const scale = Math.min(1, (window.innerWidth - 40) / panel.offsetWidth, (window.innerHeight - 40) / panel.offsetHeight);
+            panel.style.scale = scale < 1 ? scale : '';
+        }
+
+        window.addEventListener('resize', fitDetailPanel);
 
         // Close panel
         function closePanel() {
