@@ -106,7 +106,7 @@
         }
 
         .detail-panel {
-            width: min(400px, 66.667vw, calc((100vh - 40px) * 0.82));
+            width: min(440px, 66.667vw, calc((100vh - 40px) * 0.82));
             aspect-ratio: 0.82 / 1;
             background: white;
             border: 1px solid #e1e4e8;
@@ -238,16 +238,6 @@
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
         }
 
-        .marker-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #1a1a1a;
-            text-align: center;
-            margin-top: 4px;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
         .leaflet-popup-content-wrapper {
             border-radius: 8px;
         }
@@ -260,7 +250,7 @@
 
         @media (max-width: 1024px), (max-height: 600px) {
             .detail-panel {
-                width: clamp(200px, 48vw, 400px);
+                width: clamp(200px, 52vw, 440px);
                 aspect-ratio: auto;
                 padding: 10px;
                 overflow-y: auto;
@@ -438,12 +428,12 @@
             name: 'Berlin',
             city: 'Berlin',
             country: 'Germany',
-            latitude: 52.52,
-            longitude: 13.405,
+            latitude: 52.5173885,
+            longitude: 13.3951309,
             type: 'switchgear',
             status: 'behind',
             statusLabel: 'Behind Target',
-            productType: 'SF6-free HV Switchgear · Vacuum Interrupters (Blue Portfolio)',
+            productType: 'SF6-free HV Switchgear · Vacuum Interrupters',
             cotd: '74%',
             target: 'COTD vs 92% target',
             issue: 'Berlin is an assembly plant — it builds SF6-free switchgears from pre-products it manufactures in-house (vacuum interrupters, a process-industry step) plus parts it buys from suppliers. COTD has fallen to 74% against the 92% commitment: the delay sits in the in-house pre-products, in supplied parts, and in factory-test rework.',
@@ -452,17 +442,19 @@
 
         const allPlants = [
             berlinPlant,
-            { name: 'Nürnberg', latitude: 49.45, longitude: 11.080, type: 'transformer', status: 'on-track' },
-            { name: 'Jackson', latitude: 32.30, longitude: -90.180, type: 'switchgear', status: 'ramping' },
-            { name: 'Mexico', latitude: 19.43, longitude: -99.130, type: 'transformer', status: 'on-track' },
-            { name: 'Toronto', latitude: 43.65, longitude: -79.380, type: 'transformer', status: 'on-track' },
-            { name: 'Jundiai', latitude: -23.18, longitude: -46.870, type: 'transformer', status: 'at-risk' },
-            { name: 'Middle East', latitude: 25.20, longitude: 55.270, type: 'switchgear', status: 'ramping' },
-            { name: 'Dresden', latitude: 51.05, longitude: 13.740, type: 'transformer', status: 'on-track' },
-            { name: 'Shanghai', latitude: 31.23, longitude: 121.470, type: 'transformer', status: 'on-track' },
-            { name: 'Beijing', latitude: 39.90, longitude: 116.410, type: 'switchgear', status: 'on-track' },
-            { name: 'Shenzhen', latitude: 22.54, longitude: 114.060, type: 'transformer', status: 'on-track' },
-            { name: 'Chongqing', latitude: 29.56, longitude: 106.550, type: 'switchgear', status: 'on-track' }
+            { name: 'Nürnberg', latitude: 49.453872, longitude: 11.077298, type: 'transformer', status: 'at-risk' },
+            { name: 'Jackson', latitude: 32.2998686, longitude: -90.1830408, type: 'switchgear', status: 'at-risk' },
+            { name: 'Jundiaí', latitude: -23.1887668, longitude: -46.884506, type: 'transformer', status: 'at-risk' },
+            { name: 'Charlotte', latitude: 35.2272086, longitude: -80.8430827, type: 'transformer', status: 'ramping' },
+            { name: 'Dammam', latitude: 26.4367824, longitude: 50.1039991, type: 'switchgear', status: 'ramping' },
+            { name: 'Budapest', latitude: 47.4978789, longitude: 19.0402383, type: 'transformer', status: 'on-track' },
+            { name: 'Zagreb', latitude: 45.8130967, longitude: 15.9772795, type: 'transformer', status: 'on-track' },
+            { name: 'Guangzhou', latitude: 23.1288429, longitude: 113.2589581, type: 'transformer', status: 'on-track' },
+            { name: 'Shanghai', latitude: 31.2312707, longitude: 121.4700152, type: 'switchgear', status: 'on-track' },
+            { name: 'Jinan', latitude: 36.6519754, longitude: 117.1138479, type: 'transformer', status: 'on-track' },
+            { name: 'León', latitude: 21.121965, longitude: -101.6829766, type: 'transformer', status: 'on-track' },
+            { name: 'Trois-Rivières', latitude: 46.3432325, longitude: -72.5428485, type: 'transformer', status: 'on-track' },
+            { name: 'Tenjo', latitude: 4.8274537, longitude: -74.1529851, type: 'transformer', status: 'on-track' }
         ];
 
         // Status colors
@@ -488,9 +480,9 @@
             const color = statusColors[plant.status];
 
             if (plant.type === 'transformer') {
-                markerHTML = `<div style="background-color: ${color};" class="marker-circle"></div><div class="marker-label">${plant.name}</div>`;
+                markerHTML = `<div style="background-color: ${color};" class="marker-circle"></div>`;
             } else {
-                markerHTML = `<div style="background-color: ${color};" class="marker-diamond"></div><div class="marker-label">${plant.name}</div>`;
+                markerHTML = `<div style="background-color: ${color};" class="marker-diamond"></div>`;
             }
 
             const customIcon = L.divIcon({

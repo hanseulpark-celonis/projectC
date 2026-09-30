@@ -1,0 +1,27 @@
+#	Plant	Country	Region	Product focus	Status	COTD
+1	Berlin	Germany	Europe	SF6-free HV Switchgear · Vacuum Interrupters	🔴 Behind target (COTD Risk Agent)	74%
+2	Nürnberg	Germany	Europe	Large Power Transformers · Converter Assembly	🟠 At risk	82%
+3	Dresden	Germany	Europe	Medium Power Transformers	🟠 At risk	84%
+4	Jackson	USA	Americas	Air-Insulated Switchgear (+ Power Transformers)	🟠 At risk	85%
+5	Jundiaí	Brazil	Americas	Power Transformers · Power Capacitor (supply hub)	🟠 At risk	83%
+6	Charlotte	USA	Americas	Large Power Transformers (from 2027) + Service	🔵 Ramping up	—
+7	Weiz	Austria	Europe	Large Power Transformers · capacity expansion	🔵 Ramping up	—
+8	Dammam	Saudi Arabia	MEA	Gas-Insulated Switchgear (JV — partner site)	🔵 Ramping up	—
+9	Linz	Austria	Europe	Medium Power Transformers	🟢 On track	93%
+10	Preding	Austria	Europe	Power Transformers	🟢 On track	92%
+11	Zwönitz	Germany	Europe	Cutting Center (feeds transformer network)	🟢 On track	96%
+12	Kirchheim unter Teck	Germany	Europe	Distribution Transformers	🟢 On track	93%
+13	Budapest	Hungary	Europe	Distribution Transformers	🟢 On track	91%
+14	Zagreb	Croatia	Europe	Large Power Transformers	🟢 On track	90%
+15	Trento	Italy	Europe	Medium Power Transformers	🟢 On track	92%
+16	Guangzhou	China	APAC	Power & Distribution Transformers	🟢 On track	92%
+17	Wuhan	China	APAC	Power Transformers	🟢 On track	93%
+18	Shanghai	China	APAC	Gas-Insulated Switchgear	🟢 On track	95%
+19	Jinan	China	APAC	Fluid-Immersed Transformers	🟢 On track	91%
+20	Hangzhou	China	APAC	Air-Insulated Switchgear	🟢 On track	93%
+21	Wuxi	China	APAC	Air-Insulated Switchgear	🟢 On track	94%
+22	Querétaro	Mexico	Americas	Air-Insulated Switchgear	🟢 On track	94%
+23	Guanajuato	Mexico	Americas	Power & Distribution Transformers	🟢 On track	90%
+24	León	Mexico	Americas	Power Transformers	🟢 On track	92%
+25	Trois-Rivières	Canada	Americas	Distribution Transformers	🟢 On track	92%
+26	Tenjo	Colombia	Americas	Distribution Transformers	🟢 On track	93%
