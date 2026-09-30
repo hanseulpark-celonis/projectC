@@ -106,7 +106,7 @@
         }
 
         .detail-panel {
-            width: min(300px, 66.667vw, calc((100vh - 40px) * 0.82));
+            width: min(400px, 66.667vw, calc((100vh - 40px) * 0.82));
             aspect-ratio: 0.82 / 1;
             background: white;
             border: 1px solid #e1e4e8;
@@ -120,8 +120,8 @@
             position: fixed;
             right: 20px;
             top: 20px;
-            max-height: calc(100vh - 40px);
             z-index: 9999;
+            min-height: 300px;
             animation: slideIn 0.3s ease;
         }
 
