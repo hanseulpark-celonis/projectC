@@ -9,113 +9,109 @@
 			box-sizing: border-box;
 		}
 
+		:root {
+			--label-font: clamp(11px, 0.86vw, 18px);
+			--value-font: clamp(16px, 2.1vw, 44px);
+			--note-font: clamp(9px, 0.72vw, 15px);
+			--ink: #12224A;
+			--ink-strong: #1E2536;
+			--ink-muted: #4B5468;
+			--ink-faint: #8890A2;
+			--hairline: #E2E8F0;
+		}
+
 		body {
 			margin: 0;
-			color: #202020;
+			padding: 0;
+			color: var(--ink-strong);
+			background: transparent;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+			-webkit-font-smoothing: antialiased;
+			text-rendering: optimizeLegibility;
+		}
+
+		.kpi-panel {
+			container-type: inline-size;
+			padding: 12px 14px 14px;
 			background: #fff;
-			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+			border: 1px solid var(--hairline);
 		}
 
 		.kpi-list {
 			display: grid;
 			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 10px;
 			width: 100%;
-			max-width: 450px;
-			padding: 4px 0 8px;
+			min-width: 0;
 		}
 
 		.kpi {
 			min-width: 0;
-			min-height: 48px;
-			padding: 0 6px;
-			border-right: 1px solid #e6e6e6;
-		}
-
-		.kpi:last-child {
-			border-right: 0;
+			min-height: 76px;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			gap: 8px;
+			padding: 9px 12px 10px;
+			background: #fff;
+			border: 1px solid var(--hairline);
+			border-radius: 4px;
 		}
 
 		.kpi-label {
-			margin: 0 0 3px;
-			font-size: 10px;
-			font-weight: 300;
-			line-height: 1.15;
+			margin: 0;
+			font-size: var(--label-font);
+			font-weight: 400;
+			line-height: 1.2;
+			color: var(--ink-muted);
 			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		.kpi-value {
 			margin: 0;
-			font-size: 22px;
-			font-weight: 300;
+			font-size: var(--value-font);
+			font-weight: 400;
 			line-height: 1;
+			color: var(--ink);
 			white-space: nowrap;
+			font-variant-numeric: tabular-nums;
 		}
 
 		.kpi-reading {
-			display: inline-flex;
+			display: flex;
 			flex-direction: column;
-			align-items: center;
+			align-items: flex-start;
+			gap: 4px;
 		}
 
 		.kpi-note {
-			margin: 1px 0 0;
-			color: #999;
-			font-size: 9px;
+			margin: 0;
+			color: var(--ink-faint);
+			font-size: var(--note-font);
 			line-height: 1.2;
 		}
 
-		@media (max-width: 720px) {
-			.kpi-list {
-				grid-template-columns: repeat(2, minmax(0, 1fr));
-				padding: 8px 0;
-			}
-
+		@container (max-width: 620px) {
 			.kpi {
-				min-height: 94px;
-				padding: 10px 14px;
-				border-bottom: 1px solid #e6e6e6;
-			}
-
-			.kpi:nth-child(2) {
-				border-right: 0;
-			}
-
-			.kpi:nth-last-child(-n + 2) {
-				border-bottom: 0;
+				gap: 5px;
+				padding: 9px 5px 10px;
 			}
 
 			.kpi-label {
-				margin-bottom: 8px;
-				font-size: 17px;
+				font-size: clamp(9px, 2cqw, 12px);
 			}
 
 			.kpi-value {
-				font-size: 38px;
-			}
-
-			.kpi-note {
-				font-size: 12px;
-			}
-		}
-
-		@media (max-width: 360px) {
-			.kpi {
-				padding-right: 8px;
-				padding-left: 8px;
-			}
-
-			.kpi-label {
-				font-size: 15px;
-			}
-
-			.kpi-value {
-				font-size: 32px;
+				font-size: clamp(11px, 3cqw, 18px);
 			}
 		}
 	</style>
 </head>
 <body>
-	<main class="kpi-list" aria-label="Network performance metrics">
+	<main class="kpi-panel" aria-label="Network performance metrics">
+		<div class="kpi-list">
 		<section class="kpi">
 			<h2 class="kpi-label">Network COTD</h2>
 			<div class="kpi-reading">
@@ -135,6 +131,7 @@
 			<h2 class="kpi-label">Open Order Backlog</h2>
 			<p class="kpi-value">45.1B €</p>
 		</section>
+		</div>
 	</main>
 </body>
 </html>
