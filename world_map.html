@@ -106,7 +106,8 @@
         }
 
         .detail-panel {
-            width: min(480px, 66.667vw);
+            width: min(480px, 66.667vw, calc((100vh - 40px) * 0.82));
+            aspect-ratio: 0.82 / 1;
             background: white;
             border: 1px solid #e1e4e8;
             border-radius: 20px;
@@ -119,7 +120,7 @@
             position: fixed;
             right: 20px;
             top: 20px;
-            max-height: min(66.667vh, calc(100vh - 40px));
+            max-height: calc(100vh - 40px);
             z-index: 9999;
             animation: slideIn 0.3s ease;
         }
@@ -260,8 +261,10 @@
 
         @media (max-width: 1024px), (max-height: 600px) {
             .detail-panel {
+                width: clamp(200px, 48vw, 400px);
+                aspect-ratio: auto;
                 padding: 10px;
-                overflow-y: hidden;
+                overflow-y: auto;
                 border-radius: 14px;
             }
 
@@ -312,6 +315,61 @@
                 gap: 6px;
                 font-size: 10px;
                 padding: 4px 0;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .detail-panel {
+                padding: 8px;
+            }
+
+            .panel-header {
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .status-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .plant-name {
+                font-size: 16px;
+            }
+
+            .status-badge {
+                font-size: 8px;
+            }
+
+            .plant-description {
+                font-size: 9px;
+                line-height: 1.15;
+                margin-bottom: 4px;
+            }
+
+            .cotd-section {
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .cotd-value {
+                font-size: 24px;
+            }
+
+            .cotd-target {
+                font-size: 9px;
+            }
+
+            .issue-description {
+                font-size: 8px;
+                line-height: 1.15;
+                margin-bottom: 4px;
+            }
+
+            .metric {
+                gap: 4px;
+                font-size: 8px;
+                padding: 2px 0;
             }
         }
     </style>
